@@ -1,6 +1,6 @@
 from Player.Human import HumanClass
 
-class BoardClass:
+class BoardClass():
     #Generate 8 x 8 matrix of available slots using nested list comprehension.
     def __init__(self:object) -> None:
         self.board = [['⚫' if (r%2 == 0 and c%2 == 0 and c < 3) or (r%2 != 0 and c%2 != 0 and c < 3)

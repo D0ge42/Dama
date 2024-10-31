@@ -46,7 +46,8 @@ class DamaClass():
             elif turn == "Black":
 
                 print("Black TURN")
-                self.Ai.Move(self.board.board)
+                possible_moves = self.Ai.Available_black_pawn_moves(self.board.board)
+                self.Ai.Move(self.board.board,possible_moves)
                 self.board.print_board()
                 turn = "White"
 
