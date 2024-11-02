@@ -24,3 +24,9 @@ class BoardClass():
     def print_move(self:object,x:int,y:int)-> None:
         '''Test function to check wheter it's possible to move the  '''
         print(self.board[x][y])
+
+    def clear_board(self:object, board:list)->None:
+         board = [['⚫' if (r%2 == 0 and c%2 == 0 and c < 3) or (r%2 != 0 and c%2 != 0 and c < 3)
+                            else '⚪' if (r%2 == 0 and c%2 == 0 and c > 4) or (r%2 != 0 and c%2 != 0 and c > 4)
+                            else '  ' if (r%2 != 0 and c%2 == 0) or (r%2 == 0 and c%2 != 0)
+                            else '  ' for r in range(0,8)] for c in range(0,8)]

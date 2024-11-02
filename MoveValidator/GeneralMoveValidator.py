@@ -7,6 +7,15 @@ class GeneralMoveValidatorClass():
     #                  GENERAL MOVE VALIDATORS                        #
     #-----------------------------------------------------------------#
 
+    def is_input_valid(self:object, user_input:str)->int:
+        '''Function that will return integers based on which error occured.'''
+        if user_input.isdigit() == False: #User wrote chars 
+            return 0
+        elif len(user_input) is not 2: #User wrote more than 2 digits
+            return 1
+        else:
+            return 2
+
     def is_pawn_in_range(self:object, pawn_y:int, pawn_x:int)-> bool:
         '''Check whether the pawn coordinates are in range'''
         if (pawn_x >= 0 and pawn_x <= 7) and (pawn_y >= 0 and pawn_y <= 7):
@@ -27,3 +36,4 @@ class GeneralMoveValidatorClass():
             return True
         else:
             return False
+        

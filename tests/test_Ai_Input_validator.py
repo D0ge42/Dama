@@ -35,3 +35,4 @@ class TestGeneralInputValidator(unittest.TestCase):
         result = self.AiMoveValidator.can_black_pawn_be_moved(self.board,black_pawn_y, black_pawn_x)
 
         self.assertEqual(result, True)
+     

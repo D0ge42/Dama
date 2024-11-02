@@ -9,7 +9,32 @@ class TestGeneralInputValidator(unittest.TestCase):
         self.boardClass = BoardClass()
         self.board = self.boardClass.board
 
-    
+
+    def test_check_user_input(self:object):
+        '''
+        Test function to check user input. 2 if user input is fine,
+        0 if it contains also literal characters, 1 if it contains less/more than 2 digits.
+        '''
+        user_input = "42x"
+        result = self.GMoveValidator.is_input_valid(user_input)
+
+        self.assertEqual(result, 0)
+
+        user_input = "42"
+        result = self.GMoveValidator.is_input_valid(user_input)
+
+        self.assertEqual(result, 2)
+
+        user_input = "423"
+        result = self.GMoveValidator.is_input_valid(user_input)
+
+        self.assertEqual(result, 1)
+
+        user_input = "38 "
+        result = self.GMoveValidator.is_input_valid(user_input)
+
+        self.assertEqual(result, 0)
+
     def test_is_pawn_in_range(self:object):
         '''Test function to see if pawn is in range. Before arriving at this function
            (inside Human Module), the input is filtered. Only digits, and must be 2 digits only.'''

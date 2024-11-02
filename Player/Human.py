@@ -20,14 +20,11 @@ class HumanClass(PlayerClass):
 
         #Ask user to choose a pawn to move  
         pawn = str(input(f"Choose which pawn to move(Y/X):  "))
-        
-        #Check if it's only digit. (It must be)
-        while pawn.isdigit() == False:
-             pawn = str(input(f"Choose which pawn to move(Y/X):  "))
 
-        #Input lenght check
-        while(len(pawn)) is not 2:
-             pawn = str(input(f"Choose which pawn to move(Y/X):  "))
+
+        while self.GeneralMoveValidator.is_input_valid(pawn) == 0 or \
+              self.GeneralMoveValidator.is_input_valid(pawn) == 1:
+            pawn = str(input(f"Invalid input! Choose where to move selected pawn(Y/X):  "))
              
         #-----------------------------------------------------------------------#
         #                       SELECTED PAWN CHECKS                            #
@@ -50,19 +47,19 @@ class HumanClass(PlayerClass):
             pawn = str(input(f"This pawn can't go anywhere. Choose another pawn(Y/X):  "))
 
         #------------------------------------------------------------------------#
-        #                      SELECTED MOVE CHECKS                              #
+        #                      USER INPUT CHECKS                                 #
         #------------------------------------------------------------------------#
 
-        #Where to move selected pawns
         to = str(input(f"Choose where to move it(Y/X):  "))
 
-         #Check if it's only digit. (It must be)
-        while to.isdigit() == False:
-             to = str(input(f"Please only digits! Choose where to move selected pawn(Y/X):   "))
+        #Check if "to" is a valid input. 2 letters only digits.
+        while self.GeneralMoveValidator.is_input_valid(to) == 0 or \
+            self.GeneralMoveValidator.is_input_valid(to) == 1:
+            to = str(input(f"Invalid input! Choose where to move selected pawn(Y/X):  "))
 
-        #Input lenght check
-        while(len(to)) is not 2:
-             to = str(input(f"Invalid input! Must be a double-digit number(Y/X):  "))
+        #------------------------------------------------------------------------#
+        #                      SELECTED MOVE CHECKS                              #
+        #------------------------------------------------------------------------#
 
         #IsMoveInRange
         while self.GeneralMoveValidator.is_move_in_range(int(to[0]), int(to[1])) == False:

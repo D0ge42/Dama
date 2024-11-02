@@ -16,14 +16,15 @@ class PlayerMoveValidatorClass():
 
     def can_white_pawn_be_moved(self:object,board, white_pawn_y:int, white_pawn_x:int)-> bool:
         '''Function to check whether it is possible to make  any possible move with a white pawn. If not we'll ask user to select another pawn'''
-     
-        if(white_pawn_x >= 1 and white_pawn_x <= 6):
+        if white_pawn_y == 0:
+            return False
+        if((white_pawn_x >= 1 and white_pawn_x <= 6) and (white_pawn_y >= 1)):
             #Check top left spot for middle pawns
             if (board[white_pawn_y - 1][white_pawn_x - 1] == "⚪" or board[white_pawn_y - 1][white_pawn_x - 1] == "⚫"):
                 #Check top right spot for middle pawns
                 if(board[white_pawn_y -1][white_pawn_x +1] == "⚪" or board[white_pawn_y -1][white_pawn_x + 1] == "⚫"):
                     return False
-        elif(white_pawn_x == 0 or white_pawn_x == 7):
+        elif((white_pawn_x == 0 or white_pawn_x == 7) and (white_pawn_y >= 1)):
             #Check if pawn at most left spot has top right spot taken
             if ((white_pawn_x == 0 and board[white_pawn_y - 1][white_pawn_x +1] == "⚪") or \
                  (white_pawn_x == 0 and board[white_pawn_y - 1][white_pawn_x + 1] == "⚫")):
