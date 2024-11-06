@@ -8,13 +8,11 @@ class RefereeClass():
     def CheckWin(self,which_player:str,moves:list,eat:list,crowned_moves:list,crowned_eat):
         if (which_player) == "White":
             if len(moves) + len(eat) + len(crowned_moves) + len(crowned_eat) == 0:
-                print("Black won the game!")
                 return True
             else:
                 return False
         elif (which_player) == "Black":
             if len(moves) + len(eat) + len(crowned_moves) + len(crowned_eat)== 0:
-                print("White won the game!")
                 return True
             else:
                 return False

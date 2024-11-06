@@ -10,7 +10,17 @@ class AiClass(PlayerClass):
 
 
     def Available_black_pawn(self:object, board:list) -> list:
-        '''Function that will check available black pawns'''
+        """Function that will check for possible availables black pawns
+
+        Args:
+            self (object):
+            board (list): [2D list that represents board]
+
+        Returns:
+            list: [list of lists, containing 2 lists. 
+                  First one will be filled with black pawns that can move
+                  Second one will be filled with black pawns that can eat]
+        """
         self.board = board
         self.possible_movable_black_pawns = []
         self.possible_black_pawns_that_can_eat = []
@@ -29,6 +39,18 @@ class AiClass(PlayerClass):
         return [self.possible_movable_black_pawns,self.possible_black_pawns_that_can_eat]
 
     def Available_crowned_pawns(self:object, board:list, turn:str)-> list:
+        """Function that will check for available crowned pawns.
+
+        Args:
+            self (object):
+            board (list): [2d list representing board]
+            turn (str): [turn will be a string (emoji) reprensting either black or white turn]
+
+        Returns:
+            list: [list of 2 lists. 
+                    First will be movable crowned pans.
+                    Second will be crowned pawns that can eat]
+        """
         self.board = board
         self.possible_movable_crowned_black_pawns = []
         self.possible_movable_crowned_white_pawns = []
@@ -80,19 +102,71 @@ class AiClass(PlayerClass):
            We'll use this function to let 2 bot play against eachothers.'''
         
         if turn == "Black":
-            print(f"Mosse nere disponibili: {len(self.possible_movable_black_pawns)}")
             if len(self.possible_movable_black_pawns) >= 1:
                 self.move_to_do_black = random.choice(self.possible_movable_black_pawns)
-                if board[int(self.move_to_do_black[0])][int(self.move_to_do_black[1])] == "⚫":
-                    self.AiMoveValidator.Available_pawn_moves(self.board,"⚫",int(self.move_to_do_black[0]), int(self.move_to_do_black[1]))
+                move_y  = int(self.move_to_do_black[0])
+                move_x = int(self.move_to_do_black[1])
+                #self.AiMoveValidator.available_pawn_moves(self.board,"⚫",int(self.move_to_do_black[0]), int(self.move_to_do_black[1]))
+                board[move_y][move_x] = "  "
+                #We first check most left/right pawns. These pawns can only move left or right
+                #We don't need to check if their only move possible has a busy spot because
+                #we retrieve pawns from the available black pawns ready to move.
+                if (move_x == 0 or move_x == 7 and move_y <= 6):
+                    if move_x == 0:
+                        board[move_y + 1][move_x + 1] = "⚫"
+                        print(f"Ai moves black pawn from {[move_y,move_x]} to {[move_y+1, move_x +1]}")
+                    elif move_x == 7:
+                        board[move_y + 1][move_x - 1] = "⚫"
+                        print(f"Ai moves black pawn from {[move_y,move_x]} to {[move_y+1, move_x -1]}")
+                #For middle pawns we need to check if either right/left or both spots are available.
+                elif (move_x >= 1 and move_x <= 6 and move_y <= 6):
+                    #If right spot is taken, we move left
+                    if not self.DamaPawn.CheckBottomRight(board, move_y, move_x):
+                        board[move_y + 1][move_x -1] = "⚫"
+                        print(f"Ai moves black pawn from {[move_y,move_x]} to {[move_y+1, move_x -1]}")
+                    #If left spot is taken, we move right
+                    elif not self.DamaPawn.CheckBottomLeft(board, move_y, move_x):
+                        board[move_y + 1][move_x + 1] = "⚫"
+                        print(f"Ai moves black pawn from {[move_y,move_x]} to {[move_y+1, move_x +1]}")
+                    #else it means that both spot are available, so we pick one randomly.
+                    else:
+                        random_move = random.choice((-1,+1))
+                        board[move_y + 1][move_x + (random_move)] = "⚫"
+                        print(f"Ai moves black pawn from {[move_y,move_x]} to {[move_y+1, move_x + random_move]}")
 
         elif turn == "White":
-            print(f"Mosse bianche disponibili: {len(self.possible_movable_white_pawns)}")
             if len(self.possible_movable_white_pawns) >= 1:
                 self.move_to_do_white = random.choice(self.possible_movable_white_pawns)
-                if board[int(self.move_to_do_white[0])][int(self.move_to_do_white[1])] == "⚪":
-                        self.AiMoveValidator.Available_pawn_moves(self.board,"⚪",int(self.move_to_do_white[0]), int(self.move_to_do_white[1]))
-
+                move_y = int(self.move_to_do_white[0])
+                move_x = int(self.move_to_do_white[1])
+                #Remove pawn from current spot. 
+                board[move_y][move_x] = "  "
+                #We first check most left/right pawns. These pawns can only move left or right
+                #We don't need to check if their only move possible has a busy spot because
+                #we retrieve pawns from the available black pawns ready to move.
+                if (move_x == 0 or move_x == 7) and move_y >= 1:
+                    if move_x == 0:
+                        board[move_y - 1][move_x + 1] = "⚪"
+                        print(f"Ai moves white pawn from {[move_y,move_x]} to {[move_y -1, move_x + 1]}")
+                    elif move_x == 7:
+                        board[move_y - 1][move_x - 1] = "⚪"
+                        print(f"Ai moves white pawn from {[move_y,move_x]} to {[move_y -1, move_x -1]}")
+                #For middle pawns we need to check if either right/left or both spots are available.
+                elif (move_x >= 1 and move_x <= 6 and move_y >= 1):
+                    #If right spot is taken, we move left
+                    if  not self.DamaPawn.CheckTopRight(board, move_y, move_x): 
+                        board[move_y -1][move_x -1] = "⚪"
+                        print(f"Ai moves white pawn from {[move_y,move_x]} to {[move_y - 1, move_x -1]}")
+                    #If left spot is taken, we move right
+                    elif not self.DamaPawn.CheckTopLeft(board, move_y, move_x):
+                        board[move_y - 1][move_x + 1] = "⚪"
+                        print(f"Ai moves white pawn from {[move_y,move_x]} to {[move_y -1, move_x +1]}")
+                    #else it means that both spot are available, so we pick one randomly.
+                    else:
+                        random_move = random.choice((-1,+1))
+                        board[move_y - 1][move_x + (random_move)] = "⚪"
+                        print(f"Ai moves white pawn from {[move_y,move_x]} to {[move_y - 1, move_x + random_move]}")
+    
     def Eat(self:object, board:list, turn:str)-> None: #Implement possibility to eat crowned pawns
         '''
         Function that will use lists of possible  pawns that can eat to perform an "Eat" Action.
@@ -122,8 +196,7 @@ class AiClass(PlayerClass):
 
                 if (board[pawn_y + 1][pawn_x + 1] == "⚪" and board[pawn_y + 2][pawn_x + 2] == "  ") or \
                 (board[pawn_y + 1][pawn_x - 1] == "⚪" and board[pawn_y + 2][pawn_x - 2] == "  "):
-                    random_tuple = (0,1)
-                    random_num_b = random.choice(random_tuple)
+                    random_num_b = random.choice((0,1))
                     #If random num is 0 we eat bottom left if its possible
                     #else we eat bottom right
                     if random_num_b == 0:
@@ -191,8 +264,7 @@ class AiClass(PlayerClass):
             elif ((pawn_x >= 2 and pawn_x <= 5) and pawn_y >= 2):  ##BUG NEED FIX
                 if (board[pawn_y - 1][pawn_x + 1] == "⚫" and board[pawn_y - 2][pawn_x + 2] == "  ") or \
                     (board[pawn_y - 1][pawn_x - 1] == "⚫" and board[pawn_y - 2][pawn_x - 2] == "  "):
-                    random_tuple = (0,1)
-                    random_num = random.choice(random_tuple)
+                    random_num = random.choice((0,1))
                     
                     #If 1 we eat top right if it's possible.
                     if random_num == 1:
@@ -252,22 +324,18 @@ class AiClass(PlayerClass):
                 if random_move == 1: #Move TOP LEFT
                     board[y][x] = "  "
                     board[y-1][x-1] = "🤍"
-                    print(f"Muovo white crowned TOP LEFT :{random_move}")
                     print(f"Moving white_crowned_pawn [{y}{x}] to {y-1}{x-1} ")
                 elif random_move == 2: #Move TOP RIGHT
                     board[y][x] = "  "
                     board[y-1][x+1] = "🤍"
-                    print(f"Muovo white crowned TOP RIGHT :{random_move}")
                     print(f"Moving white_crowned_pawn [{y}{x}] to {y-1}{x+1} ")
                 elif random_move == 3: #Move BOTTOM RIGHT
                     board[y][x] = "  "
                     board[y+1][x+1] = "🤍"
-                    print(f"Muovo white crowned BOTTOM RIGHT :{random_move}")
                     print(f"Moving white_crowned_pawn [{y}{x}] to {y+1}{x+1} ")
                 elif random_move == 4: #Move BOTTOM LEFT
                     board[y][x] = "  "
                     board[y+1][x-1] = "🤍"
-                    print(f"Muovo white crowned BOTTOM LEFT :{random_move}")
                     print(f"Moving white_crowned_pawn [{y}{x}] to {y+1}{x-1} ")
 
         elif turn == "Black":
@@ -280,25 +348,31 @@ class AiClass(PlayerClass):
                 if random_move == 1: #Move TOP LEFT
                     board[y][x] = "  "
                     board[y-1][x-1] = "🖤"
-                    print(f"Muovo black crowned TOP LEFT :{random_move}")
                     print(f"Moving black_crowned_pawn [{y}{x}] to {y-1}{x-1} ")
                 elif random_move == 2: #Move TOP RIGHT
                     board[y][x] = "  "
                     board[y-1][x+1] = "🖤"
-                    print(f"Muovo black crowned TOP RIGHT :{random_move}")
                     print(f"Moving black_crowned_pawn [{y}{x}] to {y-1}{x+1} ")
                 elif random_move == 3: #Move BOTTOM RIGHT
                     board[y][x] = "  "
                     board[y+1][x+1] = "🖤"
-                    print(f"Muovo black crowned BOTTOM RIGHT :{random_move}")
                     print(f"Moving black_crowned_pawn [{y}{x}] to {y+1}{x+1} ")
                 elif random_move == 4: #Move BOTTOM LEFT
                     board[y][x] = "  "
                     board[y+1][x-1] = "🖤"
-                    print(f"Muovo black crowned BOTTOM LEFT :{random_move}")
                     print(f"Moving black_crowned_pawn [{y}{x}] to {y+1}{x-1} ")
 
     def Crowned_Pawn_Eat(self:object, pawn_color:str, board:list)-> bool:
+        """AI is creating summary for Crowned_Pawn_Eat
+
+        Args:
+            self (object): [description]
+            pawn_color (str): [description]
+            board (list): [description]
+
+        Returns:
+            bool: [description]
+        """
         if pawn_color == "Black":
             random_crown = random.choice(self.possible_crowned_black_pawns_that_can_eat)
             pawn_y = int(random_crown[0])

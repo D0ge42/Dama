@@ -28,7 +28,7 @@ class BoardClass():
             for elem in row:
                 if elem == "⚫" or elem == "🖤":
                     i += 1
-        print(f"BLACK PAWNS: {i}")
+        print(f"⚫BLACK PAWNS: {i}")
         return i
 
     def white_pawns_n(self:object):
@@ -37,7 +37,7 @@ class BoardClass():
             for elem in row:
                 if elem == "⚪" or elem == "🤍":
                     i += 1
-        print(f"WHITE PAWNS: {i}")
+        print(f"⚪WHITE PAWNS: {i}")
         return i
 
     def print_move(self:object,x:int,y:int)-> None:

@@ -25,6 +25,10 @@ class DamaClass():
         self.white_n = 0
         self.black_n = 0
         self.draw = 0
+        self.n_available_white_moves = None
+        self.n_available_white_pawns_that_can_eat = None
+        self.possible_movable_crowned_white_pawns = None
+        self.possible_white_crowned_pawns_that_can_eat = None
         
     def start_game(self: object)-> None:
         ''' Start game will handle:
@@ -55,7 +59,7 @@ class DamaClass():
         # while self.is_running:
                 if turn == "White":
                     print()
-                    print("White TURN")
+                    print("⬜️ WHITE TURN ⬜️")
                     
 
                     #                         IT IS NOW WHITE TURN                              #
@@ -69,14 +73,13 @@ class DamaClass():
                     self.n_available_white_pawns_that_can_eat = self.Ai.Available_white_pawn(self.board.board)[1]
                     self.possible_movable_crowned_white_pawns = self.Ai.Available_crowned_pawns(self.board.board, "White")[0]
                     self.possible_white_crowned_pawns_that_can_eat = self.Ai.Available_crowned_pawns(self.board.board, "White")[1]
-                    print(self.possible_white_crowned_pawns_that_can_eat)
 
                      
                     
                     #                       CHECK WIN CONDITION                                 #
                     #---------------------------------------------------------------------------#
                     draw = self.Referee.CheckDraw(self.total_moves,self.white_n,self.black_n)
-                    if draw == True:
+                    if draw is True:
                         self.resetGame("Draw")
 
                     if self.Referee.CheckWin(
@@ -88,7 +91,7 @@ class DamaClass():
 
                             self.no_more_white_moves = True
                             self.white_cant_eat_anymore = True
-                            print("BLACK PLAYER WINS!")
+                            print("👑BLACK PLAYER WINS!👑")
                             self.black_won += 1
                         
                         
@@ -107,7 +110,7 @@ class DamaClass():
                     #----------------------------------------------------------------------------#
 
                     # self.player1.Move(self.board.board)
-                    print(f"Partita N° : {self.partite_giocate}")
+                    print(f"📍Partita N°: {self.partite_giocate}")
                     random_num_w = random.choice((0,1,2,3))
                    
                
@@ -155,7 +158,7 @@ class DamaClass():
 
                     self.DamaPawn.DamaCheck(self.board.board, "⚫",)
                     self.DamaPawn.DamaCheck(self.board.board, "⚪",)
-                    print(f"Mosse fatte: {self.total_moves}")
+                    print(f"📝Mosse fatte: {self.total_moves}")
                     self.white_n = self.board.white_pawns_n()
                     self.black_n = self.board.black_pawns_n()
                     self.board.print_board(self.board.board)
@@ -169,7 +172,7 @@ class DamaClass():
                 elif turn == "Black":
                     
                     print()
-                    print("Black TURN")
+                    print("⬛️ BLACK TURN ⬛️")
 
                     #                         AVAILABLE MOVES CHECK                               #
                     #-----------------------------------------------------------------------------#
@@ -177,7 +180,6 @@ class DamaClass():
                     self.n_available_black_pawns_that_can_eat = self.Ai.Available_black_pawn(self.board.board)[1]
                     self.possible_movable_crowned_black_pawns = self.Ai.Available_crowned_pawns(self.board.board, "Black")[0]
                     self.possible_black_crowned_pawns_that_can_eat = self.Ai.Available_crowned_pawns(self.board.board, "Black")[1]
-                    print(self.possible_black_crowned_pawns_that_can_eat)
             
                     #                       CHECK WIN CONDITION                                   #
                     #-----------------------------------------------------------------------------#
@@ -193,7 +195,7 @@ class DamaClass():
                         
                         self.no_more_black_moves = True
                         self.black_cant_eat_anymore = True
-                        print(f"WHITE PLAYER WINS!")
+                        print(f"👑WHITE PLAYER WINS!👑")
                         self.white_won += 1
 
                     
@@ -207,7 +209,7 @@ class DamaClass():
 
                     #                          BLACK MOVES                                        #
                     #-----------------------------------------------------------------------------#
-                    print(f"Partita N° : {self.partite_giocate}")
+                    print(f"📍Partita N° : {self.partite_giocate}")
                     random_num = random.choice((0,1,2,3))
                 
                     
@@ -255,7 +257,7 @@ class DamaClass():
                     
                     self.DamaPawn.DamaCheck(self.board.board, "⚫",)
                     self.DamaPawn.DamaCheck(self.board.board, "⚪",)
-                    print(f"Mosse fatte: {self.total_moves}")
+                    print(f"📝Mosse fatte: {self.total_moves}")
                     self.white_n = self.board.white_pawns_n()
                     self.black_n = self.board.black_pawns_n()
                     self.board.print_board(self.board.board)
@@ -263,9 +265,9 @@ class DamaClass():
 
                     turn = "White"
 
-        print(f"White won {self.white_won}")
-        print(f"Black won: {self.black_won}")
-        print(f"Draw: {self.draw}")
+        print(f"🤍White won {self.white_won}🤍")
+        print(f"🖤Black won: {self.black_won}🖤")
+        print(f"🤝Draw: {self.draw}🤝")
             
 
     def resetGame(self:object,draw:str)-> None:
