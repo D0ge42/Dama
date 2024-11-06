@@ -166,7 +166,55 @@ class AiClass(PlayerClass):
                         random_move = random.choice((-1,+1))
                         board[move_y - 1][move_x + (random_move)] = "⚪"
                         print(f"Ai moves white pawn from {[move_y,move_x]} to {[move_y - 1, move_x + random_move]}")
-    
+
+    def pawnEatBottomRight(self:object, board,pawn_y, pawn_x,action:str):
+        if board[pawn_y + 1][pawn_x + 1] == "⚪" and board[pawn_y + 2][pawn_x + 2] == "  ":
+            if action == "Check":
+                return True
+            elif action == "Eat":
+                board[pawn_y][pawn_x] = "  "
+                board[pawn_y + 1][pawn_x + 1] = "  "
+                board[pawn_y + 2][pawn_x + 2] = "⚫"
+                print(f"Black pawn {pawn_y}{pawn_x} eat White Pawn {pawn_y+1}{pawn_x+1} and ends up at {pawn_y +2}{pawn_x + 2}") #✅ Checked
+        else:
+            return False #Can't eat
+
+    def pawnEatBottomLeft(self:object, board,pawn_y, pawn_x,action:str):
+       if(board[pawn_y + 1][pawn_x - 1] == "⚪" and board[pawn_y + 2][pawn_x - 2] == "  "):
+            if action == "Check":
+                return True
+            elif action == "Eat":
+                board[pawn_y][pawn_x] = "  "
+                board[pawn_y + 1][pawn_x - 1] = "  "
+                board[pawn_y + 2][pawn_x - 2] = "⚫"
+                print(f"Black pawn {pawn_y}{pawn_x} eat White Pawn {pawn_y+1}{pawn_x - 1} and ends up at {pawn_y +2}{pawn_x - 2}") #✅ Checked
+       else:
+           return False
+
+    def pawnEatTopRight(self:object, board, pawn_y, pawn_x, action:str):
+        if (board[pawn_y -1][pawn_x + 1] == "⚫" and board[pawn_y - 2][pawn_x + 2] == "  "):
+            if action == "Check":
+                return True
+            elif action == "Eat":
+                board[pawn_y][pawn_x] = "  "
+                board[pawn_y - 1][pawn_x + 1] = "  "
+                board[pawn_y - 2][pawn_x + 2] = "⚪"
+                print(f"White pawn {pawn_y}{pawn_x} eat Black Pawn {pawn_y-1}{pawn_x+1} and ends up at {pawn_y -2}{pawn_x + 2}") #✅ Checked
+        else:
+            return False
+
+    def pawnEatTopLeft(self:object, board, pawn_y, pawn_x, action:str):
+        if (board[pawn_y -1][pawn_x - 1] == "⚫" and board[pawn_y - 2][pawn_x - 2] == "  "):
+            if action == "Check":
+                return True
+            elif action == "Eat":
+                board[pawn_y][pawn_x] = "  "
+                board[pawn_y - 1][pawn_x - 1] = "  "
+                board[pawn_y - 2][pawn_x - 2] = "⚪"
+                print(f"White pawn {pawn_y}{pawn_x} eat Black Pawn {pawn_y-1}{pawn_x-1} and ends up at {pawn_y -2}{pawn_x - 2}") #✅ Checked
+        else:
+            return False
+        
     def Eat(self:object, board:list, turn:str)-> None: #Implement possibility to eat crowned pawns
         '''
         Function that will use lists of possible  pawns that can eat to perform an "Eat" Action.
@@ -184,66 +232,30 @@ class AiClass(PlayerClass):
                 #Check if most left black pawn can eat
             if ((pawn_x == 0 or pawn_x == 1) and pawn_y <= 5):
                 #If this is true then it means we can do an Eat action.
-                if board[pawn_y + 1][pawn_x + 1] == "⚪" and board[pawn_y + 2][pawn_x + 2] == "  ":
-                    board[pawn_y][pawn_x] = "  "
-                    board[pawn_y + 1][pawn_x + 1] = "  "
-                    board[pawn_y + 2][pawn_x + 2] = "⚫"
-                    print(f"Black pawn {pawn_y}{pawn_x} eat White Pawn {pawn_y+1}{pawn_x+1} and ends up at {pawn_y +2}{pawn_x + 2}") #✅ Checked
-                else:
-                    return False #Can't eat
+                self.pawnEatBottomRight(board,pawn_y,pawn_x,"Eat")
             #Check if middle black pawn can eat
             elif ((pawn_x >= 2 and pawn_x <= 5) and pawn_y <= 5):
 
-                if (board[pawn_y + 1][pawn_x + 1] == "⚪" and board[pawn_y + 2][pawn_x + 2] == "  ") or \
-                (board[pawn_y + 1][pawn_x - 1] == "⚪" and board[pawn_y + 2][pawn_x - 2] == "  "):
+                if self.pawnEatBottomRight(board,pawn_y,pawn_x,"Check") or \
+                    self.pawnEatBottomLeft(board, pawn_y,pawn_x,"Check"):
                     random_num_b = random.choice((0,1))
                     #If random num is 0 we eat bottom left if its possible
                     #else we eat bottom right
                     if random_num_b == 0:
-                        if(board[pawn_y + 1][pawn_x - 1] == "⚪" and board[pawn_y + 2][pawn_x - 2] == "  "):
-                            board[pawn_y][pawn_x] = "  "
-                            board[pawn_y + 1][pawn_x - 1] = "  "
-                            board[pawn_y + 2][pawn_x - 2] = "⚫"
-                            print(f"Black pawn {pawn_y}{pawn_x} eat White Pawn {pawn_y+1}{pawn_x - 1} and ends up at {pawn_y +2}{pawn_x - 2}") #✅ Checked
-
-                        elif (board[pawn_y + 1][pawn_x + 1] == "⚪" and board[pawn_y + 2][pawn_x + 2] == "  "):
-                            board[pawn_y][pawn_x] = "  "
-                            board[pawn_y + 1][pawn_x + 1] = "  "
-                            board[pawn_y + 2][pawn_x + 2] = "⚫"
-                            print(f"Black pawn {pawn_y}{pawn_x} eat White Pawn {pawn_y+1}{pawn_x+1} and ends up at {pawn_y +2}{pawn_x + 2}") #✅ Checked
-
+                        result = self.pawnEatBottomLeft(board,pawn_y,pawn_x,"Eat")
+                        if not result:
+                            self.pawnEatBottomRight(board,pawn_y,pawn_x,"Eat")
                     #If random num is 1 we eat bottom right if its possible
                     #else we eat bottom left
                     elif random_num_b == 1:
-                        if(board[pawn_y + 1][pawn_x + 1] == "⚪" and board[pawn_y + 2][pawn_x + 2] == "  "):
-                            board[pawn_y][pawn_x] = "  "
-                            board[pawn_y + 1][pawn_x + 1] = "  "
-                            board[pawn_y + 2][pawn_x + 2] = "⚫"
-                            print(f"Black pawn {pawn_y}{pawn_x} eat White Pawn {pawn_y+1}{pawn_x+1} and ends up at {pawn_y +2}{pawn_x + 2}")
-
-                        elif (board[pawn_y + 1][pawn_x - 1] == "⚪" and board[pawn_y + 2][pawn_x - 2] == "  "):
-                            board[pawn_y][pawn_x] = "  "
-                            board[pawn_y + 1][pawn_x - 1] = "  "
-                            board[pawn_y + 2][pawn_x - 2] = "⚫"
-                            print(f"Black pawn {pawn_y}{pawn_x} eat White Pawn {pawn_y+1}{pawn_x-1} and ends up at {pawn_y +2}{pawn_x - 2}") #✅ Checked
-                else:
-                    return False #Can't eat
-                
+                        result = self.pawnEatBottomRight(board,pawn_y,pawn_x,"Eat")
+                        if not result:
+                            self.pawnEatBottomLeft(board,pawn_y,pawn_x,"Eat")  
             #Check if most right black pawn can eat
             elif ((pawn_x == 7 or pawn_x == 6) and pawn_y <= 5):
                  #If this is true then it means we can do an Eat action.
-                if board[pawn_y + 1][pawn_x -1] == "⚪" and board[pawn_y + 2][pawn_x - 2] == "  ":
-                    board[pawn_y][pawn_x] = "  "
-                    board[pawn_y + 1][pawn_x - 1] = "  "
-                    board[pawn_y + 2][pawn_x - 2] = "⚫"
-                    print(f"Black pawn {pawn_y}{pawn_x} eat White Pawn {pawn_y+1}{pawn_x -1} and ends up at {pawn_y +2}{pawn_x - 2}") #✅ Checked
-                else:
-                    return False #Can't eat
-            else:
-                return False
-        #                                                                                               #
-        #                               IF IT'S WHITE TURN                                              #
-        #-----------------------------------------------------------------------------------------------#
+                self.pawnEatBottomLeft(board,pawn_y,pawn_x,"Eat")
+
         elif turn == "White":
             if len(self.possible_white_pawns_that_can_eat):
                 random_white_pawn_eat = random.choice(self.possible_white_pawns_that_can_eat)
@@ -253,59 +265,25 @@ class AiClass(PlayerClass):
             pawn_x = int(random_white_pawn_eat[1]) #Get X coordinates of selected pawn that can Eat
             #Check if most left white pawn can eat
             if ((pawn_x == 0 or pawn_x == 1) and pawn_y >= 2):
-                if board[pawn_y -1][pawn_x + 1] == "⚫" and board[pawn_y - 2][pawn_x + 2] == "  ":
-                    board[pawn_y][pawn_x] = "  "
-                    board[pawn_y - 1][pawn_x + 1] = "  "
-                    board[pawn_y - 2][pawn_x + 2] = "⚪"
-                    print(f"White pawn {pawn_y}{pawn_x} eat Black Pawn {pawn_y-1}{pawn_x+1} and ends up at {pawn_y -2}{pawn_x + 2}") #✅ Checked
-                else:
-                    return False
+                self.pawnEatTopRight(board, pawn_y,pawn_x,"Eat")
             #Check if middle white pawn can eat
             elif ((pawn_x >= 2 and pawn_x <= 5) and pawn_y >= 2):  ##BUG NEED FIX
-                if (board[pawn_y - 1][pawn_x + 1] == "⚫" and board[pawn_y - 2][pawn_x + 2] == "  ") or \
-                    (board[pawn_y - 1][pawn_x - 1] == "⚫" and board[pawn_y - 2][pawn_x - 2] == "  "):
+                if  self.pawnEatTopRight(board, pawn_y,pawn_x,"Check") or \
+                    self.pawnEatTopLeft(board, pawn_y, pawn_x,"Check"):
                     random_num = random.choice((0,1))
-                    
                     #If 1 we eat top right if it's possible.
                     if random_num == 1:
-                        if(board[pawn_y - 1][pawn_x + 1] == "⚫" and board[pawn_y - 2][pawn_x + 2] == "  "):
-                            board[pawn_y][pawn_x] = "  "
-                            board[pawn_y - 1][pawn_x + 1] = "  "
-                            board[pawn_y - 2][pawn_x + 2] = "⚪"
-                            print(f"White pawn {pawn_y}{pawn_x} eat Black Pawn {pawn_y-1}{pawn_x+1} and ends up at {pawn_y -2}{pawn_x + 2}") #✅ Checked
-                        #Else we eat top left
-                        elif (board[pawn_y - 1][pawn_x - 1] == "⚫" and board[pawn_y - 2][pawn_x - 2] == "  "):
-                            board[pawn_y][pawn_x] = "  "
-                            board[pawn_y - 1][pawn_x - 1] = "  "
-                            board[pawn_y - 2][pawn_x - 2] = "⚪"                                                
-                            print(f"White pawn {pawn_y}{pawn_x} eat Black Pawn {pawn_y-1}{pawn_x-1} and ends up at {pawn_y -2}{pawn_x - 2}") #✅ Checked
-                            
+                        result = self.pawnEatTopRight(board, pawn_y,pawn_x,"Eat")
+                        if not result:
+                            self.pawnEatTopLeft(board, pawn_y,pawn_x,"Eat")
                     #If 0 we eat top left if it's possible.
                     elif random_num == 0:
-                        if(board[pawn_y - 1][pawn_x - 1] == "⚫" and board[pawn_y - 2][pawn_x - 2] == "  "):
-                            board[pawn_y][pawn_x] = "  "
-                            board[pawn_y - 1][pawn_x - 1] = "  "
-                            board[pawn_y - 2][pawn_x - 2] = "⚪"
-                            print(f"White pawn {pawn_y}{pawn_x} eat Black Pawn {pawn_y-1}{pawn_x-1} and ends up at {pawn_y -2}{pawn_x - 2}") #✅ Checked
-                        #Else we eat bottom right.
-                        elif(board[pawn_y - 1][pawn_x + 1] == "⚫" and board[pawn_y - 2][pawn_x + 2] == "  "):
-                            board[pawn_y][pawn_x] = "  "
-                            board[pawn_y - 1][pawn_x + 1] = "  "
-                            board[pawn_y - 2][pawn_x + 2] = "⚪"
-                            print(f"White pawn {pawn_y}{pawn_x} eat Black Pawn {pawn_y-1}{pawn_x+1} and ends up at {pawn_y -2}{pawn_x + 2}") #✅ Checked
-                else:
-                    return False
+                        result = self.pawnEatTopLeft(board, pawn_y,pawn_x,"Eat")
+                        if not result:
+                            self.pawnEatTopRight(board,pawn_y,pawn_x,"Eat")
             #Check if most right white pawn can eat
             elif ((pawn_x == 7 or pawn_x == 6) and pawn_y >= 2):
-                if board[pawn_y - 1][pawn_x - 1] == "⚫" and board[pawn_y - 2][pawn_x - 2] == "  ":
-                    board[pawn_y][pawn_x] = "  "
-                    board[pawn_y - 1][pawn_x - 1] = "  "
-                    board[pawn_y - 2][pawn_x - 2] = "⚪"
-                    print(f"White pawn {pawn_y}{pawn_x} eat Black Pawn {pawn_y-1}{pawn_x-1} and ends up at {pawn_y -2}{pawn_x - 2}") #✅ Checked
-                else:
-                    return False
-        else:
-            return False 
+                self.pawnEatTopLeft(board,pawn_y,pawn_x,"Eat")
         
     def MoveCrownedPawn(self:object, board:list, turn:str)-> None:
         '''

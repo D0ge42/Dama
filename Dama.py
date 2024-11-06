@@ -55,7 +55,7 @@ class DamaClass():
         #-------------------------------------------#
         #               GAME FLOW                   # 
         #-------------------------------------------#
-        while self.partite_giocate < 1000:
+        while self.partite_giocate < 100:
         # while self.is_running:
                 if turn == "White":
                     print()
@@ -79,7 +79,7 @@ class DamaClass():
                     #                       CHECK WIN CONDITION                                 #
                     #---------------------------------------------------------------------------#
                     draw = self.Referee.CheckDraw(self.total_moves,self.white_n,self.black_n)
-                    if draw is True:
+                    if draw == True:
                         self.resetGame("Draw")
 
                     if self.Referee.CheckWin(
@@ -163,7 +163,6 @@ class DamaClass():
                     self.black_n = self.board.black_pawns_n()
                     self.board.print_board(self.board.board)
                     self.total_moves += 1
-
                     turn = "Black"
                     
                     #                       IT IS NOW BLACK TURN                                 #
@@ -262,7 +261,6 @@ class DamaClass():
                     self.black_n = self.board.black_pawns_n()
                     self.board.print_board(self.board.board)
                     self.total_moves += 1
-
                     turn = "White"
 
         print(f"🤍White won {self.white_won}🤍")
