@@ -26,17 +26,19 @@ class BoardClass():
         i = 0
         for row in self.board:
             for elem in row:
-                if elem == "⚫":
+                if elem == "⚫" or elem == "🖤":
                     i += 1
         print(f"BLACK PAWNS: {i}")
+        return i
 
     def white_pawns_n(self:object):
         i = 0
         for row in self.board:
             for elem in row:
-                if elem == "⚪":
+                if elem == "⚪" or elem == "🤍":
                     i += 1
         print(f"WHITE PAWNS: {i}")
+        return i
 
     def print_move(self:object,x:int,y:int)-> None:
         '''Test function to check wheter it's possible to move the  '''
@@ -45,6 +47,13 @@ class BoardClass():
     def clear_board(self:object, board)->None:
          board = [['⚫' if (r%2 == 0 and c%2 == 0 and c < 3) or (r%2 != 0 and c%2 != 0 and c < 3)
                             else '⚪' if (r%2 == 0 and c%2 == 0 and c > 4) or (r%2 != 0 and c%2 != 0 and c > 4)
+                            else '  ' if (r%2 != 0 and c%2 == 0) or (r%2 == 0 and c%2 != 0)
+                            else '  ' for r in range(0,8)] for c in range(0,8)]
+         return board
+    
+    def empty_board(self:object, board)->None:
+         board = [['  ' if (r%2 == 0 and c%2 == 0 and c < 3) or (r%2 != 0 and c%2 != 0 and c < 3)
+                            else '  ' if (r%2 == 0 and c%2 == 0 and c > 4) or (r%2 != 0 and c%2 != 0 and c > 4)
                             else '  ' if (r%2 != 0 and c%2 == 0) or (r%2 == 0 and c%2 != 0)
                             else '  ' for r in range(0,8)] for c in range(0,8)]
          return board

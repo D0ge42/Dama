@@ -25,7 +25,8 @@ class GeneralMoveValidatorClass():
         
     def is_spot_taken(self:object, board:list, move_y:int, move_x:int):
         '''Function to check whether the spot is taken or not by another black or white pawn'''
-        if board[move_y][move_x] == "⚫" or board[move_y][move_x] == "⚪":
+        if board[move_y][move_x] == "⚫" or board[move_y][move_x] == "⚪" or \
+            board[move_y][move_x] == "🖤" or board[move_y][move_x] == "🤍":
             return True
         else:
             return False

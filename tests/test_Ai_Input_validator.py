@@ -153,7 +153,7 @@ class TestGeneralInputValidator(unittest.TestCase):
         self.board[4][6] = "⚪"
 
         print()
-        self.boardClass.print_board(self.board)
+        #self.boardClass.print_board(self.board)
 
         #Function should return True since [3][7] black pawn can eat [4][6] white pawn.
         result = self.AiMoveValidator.can_black_pawn_eat("⚫", self.board,3,7)
@@ -251,6 +251,224 @@ class TestGeneralInputValidator(unittest.TestCase):
 
         self.assertEqual(result, True)
         self.board = self.boardClass.clear_board(self.board) #restore board
+
+    def test_can_crowned_pawn_move(self:object)-> None:
+        #We empty the board so we can test freely
+        self.board = self.boardClass.empty_board(self.board)
+
+        #We put a Crowned white pawn in the middle and 4 pawns around it.
+        self.board[4][4] = "🤍"
+        self.board[3][3] = "⚫"
+        self.board[5][5] = "⚫"
+        self.board[3][5] = "⚪"
+        self.board[5][3] = "⚪"
+        #self.boardClass.print_board(self.board)
+
+        result = self.AiMoveValidator.can_crowned_pawn_move(self.board,4,4)
+
+        self.assertEqual(result, False)
+
+#-------                                                              -------#
+        self.board = self.boardClass.empty_board(self.board)
+
+        #We put a Crowned white pawn in the middle and 3 pawns around it.
+        #Top right spot is free so function should return a list equal to [2]
+        self.board[4][4] = "🤍"
+        self.board[3][3] = "⚫"
+        self.board[5][5] = "⚫"
+        self.board[5][3] = "⚪"
+        #self.boardClass.print_board(self.board)
+
+        result = self.AiMoveValidator.can_crowned_pawn_move(self.board,4,4)
+
+        self.assertEqual(result, [2])
+
+#------                                                              -------#
+        self.board = self.boardClass.empty_board(self.board)
+
+        #We put a Crowned white pawn in the middle and 2 pawns around it.
+        #Top right spot is free so function should return a list equal to [1,2]
+        self.board[4][4] = "🤍"
+        self.board[5][5] = "⚫"
+        self.board[5][3] = "⚪"
+        #self.boardClass.print_board(self.board)
+
+        result = self.AiMoveValidator.can_crowned_pawn_move(self.board,4,4)
+
+        self.assertEqual(result, [1,2])
+
+#-------                                                                -----#
+
+        self.board = self.boardClass.empty_board(self.board)
+
+        #We put a Crowned white pawn in the middle and 1 pawns around it.
+        #Top right spot is free so function should return a list equal to [1,2,3]
+        self.board[4][4] = "🤍"
+        self.board[5][3] = "⚪"
+        #self.boardClass.print_board(self.board)
+
+        result = self.AiMoveValidator.can_crowned_pawn_move(self.board,4,4)
+
+        self.assertEqual(result, [1,2,3])
+
+#-------                                                                -----#
+
+        self.board = self.boardClass.empty_board(self.board)
+
+        #We put a Crowned white pawn in the middle and 1 pawns around it.
+        #Top right spot is free so function should return a list equal to [1,2,3,4]
+        self.board[4][4] = "🤍"
+        #self.boardClass.print_board(self.board)
+
+        result = self.AiMoveValidator.can_crowned_pawn_move(self.board,4,4)
+
+        self.assertEqual(result, [1,2,3,4])
+        
+
+#-------                                                                -----#
+
+        self.board = self.boardClass.empty_board(self.board)
+
+        #We put a Crowned black pawn at x == 7  and 2 pawns around it. One top left, one Bot left
+        #Function should return False cause pawn cannot move.
+        self.board[3][7] = "🖤"
+        self.board[2][6] = "🤍"
+        self.board[4][6] = "⚪"
+        #self.boardClass.print_board(self.board)
+
+        result = self.AiMoveValidator.can_crowned_pawn_move(self.board,3,7)
+
+        self.assertEqual(result, False)
+
+#-------                                                                -----#
+
+        self.board = self.boardClass.empty_board(self.board)
+
+        #We put a Crowned black pawn at x == 7  and 2 pawns around it. One top left, one Bot left
+        #Function should return False cause pawn cannot move.
+        self.board[3][7] = "🖤"
+        self.board[4][6] = "⚪"
+        #self.boardClass.print_board(self.board)
+
+        result = self.AiMoveValidator.can_crowned_pawn_move(self.board,3,7)
+
+        self.assertEqual(result, [1]) 
+
+
+#-------                                                                -----#
+
+        self.board = self.boardClass.empty_board(self.board)
+
+        #We put a Crowned black pawn at x == 7  and 2 pawns around it. One top left, one Bot left
+        #Function should return False cause pawn cannot move.
+        self.board[3][7] = "🖤"
+        #self.boardClass.print_board(self.board)
+
+        result = self.AiMoveValidator.can_crowned_pawn_move(self.board,3,7)
+
+        self.assertEqual(result, [1,4]) 
+
+#-------                                                                -----#
+        self.board = self.boardClass.empty_board(self.board)
+
+        #We put a Crowned black pawn at x == 7  and 2 pawns around it. One top left, one Bot left
+        #Function should return False cause pawn cannot move.
+        self.board[7][7] = "🖤"
+        self.board[6][6] = "🤍"
+        #self.boardClass.print_board(self.board)
+
+        result = self.AiMoveValidator.can_crowned_pawn_move(self.board,7,7)
+
+        self.assertEqual(result, False)
+
+    def test_can_crowned_eat(self:object)-> None:
+        #We empty the board so we can test freely
+
+        self.board = self.boardClass.empty_board(self.board)
+
+        #We put a Crowned white pawn in the middle and 4 pawns around it.
+        self.board[4][4] = "🤍"
+        self.board[3][3] = "⚫"
+        self.board[5][5] = "⚫"
+        self.board[3][5] = "⚪"
+        self.board[5][3] = "⚪"
+        #self.boardClass.print_board(self.board)
+
+        result = self.AiMoveValidator.can_crowned_eat("White",self.board,4,4)
+
+        self.assertEqual(result, [1,3])
+#-----                                                 #----------
+
+        self.board = self.boardClass.empty_board(self.board)
+
+        #Testing eat on board corners to see if pawn goes out of board
+        self.board[1][6] = "🤍"
+        self.board[0][5] = "⚫"
+      
+        #self.boardClass.print_board(self.board)
+
+        result = self.AiMoveValidator.can_crowned_eat("White",self.board,1,6)
+
+        self.assertEqual(result, False)
+#-----                                                 #----------
+
+        self.board = self.boardClass.empty_board(self.board)
+
+        #Testing if pawn goes out of board when eating
+        self.board[2][6] = "🖤"
+        self.board[1][7] = "🤍"
+      
+        #self.boardClass.print_board(self.board)
+
+        result = self.AiMoveValidator.can_crowned_eat("Black",self.board,2,6)
+
+        self.assertEqual(result, False)
+#-----                                                 #----------
+
+        self.board = self.boardClass.empty_board(self.board)
+
+        #We put a Crowned white pawn in the middle and 4 pawns around it.
+        self.board[4][4] = "🤍"
+        self.board[3][3] = "⚫"
+        self.board[5][5] = "⚫"
+        self.board[3][5] = "⚫"
+        self.board[5][3] = "⚫"
+        #self.boardClass.print_board(self.board)
+
+        result = self.AiMoveValidator.can_crowned_eat("White",self.board,4,4)
+
+        self.assertEqual(result, [1,2,3,4])
+#-----                                                 #----------
+
+        self.board = self.boardClass.empty_board(self.board)
+
+        #We put a Crowned white pawn in the middle and 4 pawns around it.
+        self.board[4][4] = "🖤"
+        self.board[3][3] = "⚫"
+        self.board[5][5] = "⚫"
+        self.board[3][5] = "⚫"
+        self.board[5][3] = "⚫"
+        #self.boardClass.print_board(self.board)
+
+        result = self.AiMoveValidator.can_crowned_eat("Black",self.board,4,4)
+
+        self.assertEqual(result, False)
+#-----                                                 #----------
+
+        self.board = self.boardClass.empty_board(self.board)
+
+        #We put a Crowned white pawn in the middle and 4 pawns around it.
+        self.board[4][4] = "🖤"
+        self.board[3][3] = "⚪"
+        self.board[5][5] = "⚪"
+        self.board[3][5] = "⚪"
+        self.board[5][3] = "⚪"
+        #self.boardClass.print_board(self.board)
+
+        result = self.AiMoveValidator.can_crowned_eat("Black",self.board,4,4)
+
+        self.assertEqual(result, [1,2,3,4])
+#-----                                                 #----------
 
 #--------------------------------------------------------------------------------------#
  
